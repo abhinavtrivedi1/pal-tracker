@@ -6,7 +6,7 @@ import org.springframework.stereotype.Repository;
 import java.lang.reflect.Array;
 import java.util.*;
 
-@Repository
+
 public class InMemoryTimeEntryRepository implements TimeEntryRepository{
 
     private Map<Long,TimeEntry> userTable= new HashMap<>();
