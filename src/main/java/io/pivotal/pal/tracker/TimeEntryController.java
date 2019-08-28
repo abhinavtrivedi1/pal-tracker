@@ -5,6 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 @RestController
 public class TimeEntryController {
@@ -34,10 +35,9 @@ public class TimeEntryController {
     public ResponseEntity<List<TimeEntry>> list() {
 
         List<TimeEntry> timeEntries= timeEntryRepository.list();
-        if(null!=timeEntries && !timeEntries.isEmpty())
+
         return new ResponseEntity(timeEntries, HttpStatus.OK);
 
-        return new ResponseEntity(timeEntries, HttpStatus.NOT_FOUND);
 
 
     }
