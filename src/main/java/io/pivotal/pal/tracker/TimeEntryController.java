@@ -11,12 +11,11 @@ public class TimeEntryController {
 
     @Autowired
     private TimeEntryRepository timeEntryRepository;
-    @Autowired
-    private TimeEntryController controller;
+
 
 
     public TimeEntryController(TimeEntryRepository timeEntryRepository) {
-        
+        this.timeEntryRepository=timeEntryRepository;
     }
     @PostMapping("/time-entries")
     public ResponseEntity create(@RequestBody TimeEntry timeEntryToCreate) {
@@ -31,15 +30,33 @@ public class TimeEntryController {
         return new ResponseEntity(timeEntry, HttpStatus.OK);
     }
 
+    @GetMapping("/time-entries")
     public ResponseEntity<List<TimeEntry>> list() {
-        return null;
+
+        List<TimeEntry> timeEntries= timeEntryRepository.list();
+        if(null!=timeEntries && !timeEntries.isEmpty())
+        return new ResponseEntity(timeEntries, HttpStatus.OK);
+
+        return new ResponseEntity(timeEntries, HttpStatus.NOT_FOUND);
+
+
     }
 
-    public ResponseEntity update(long timeEntryId, TimeEntry expected) {
-        return null;
+    @PutMapping("/time-entries/{id}")
+    public ResponseEntity update(@PathVariable (name="id")  long timeEntryId, @RequestBody TimeEntry expected) {
+        TimeEntry timeEntry= timeEntryRepository.update(timeEntryId,expected);
+        if(null!=timeEntry)
+        return new ResponseEntity(timeEntry, HttpStatus.OK);
+
+        return new ResponseEntity(timeEntry, HttpStatus.NOT_FOUND);
     }
 
-    public ResponseEntity delete(long timeEntryId) {
-        return null;
+    @DeleteMapping("/time-entries/{id}")
+    public ResponseEntity delete(@PathVariable(name="id") long timeEntryId) {
+
+            timeEntryRepository.delete(timeEntryId);
+            return new ResponseEntity(HttpStatus.NO_CONTENT);
+
+
     }
 }
