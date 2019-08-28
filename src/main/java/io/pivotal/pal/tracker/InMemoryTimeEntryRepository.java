@@ -4,10 +4,7 @@ package io.pivotal.pal.tracker;
 import org.springframework.stereotype.Repository;
 
 import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Repository
 public class InMemoryTimeEntryRepository implements TimeEntryRepository{
@@ -44,14 +41,7 @@ public class InMemoryTimeEntryRepository implements TimeEntryRepository{
     }
 
     @Override
-    public List<TimeEntry> list(){
-        List<TimeEntry> list = new ArrayList<TimeEntry>();
-        for (long  id : userTable.keySet()){
-
-           list.add(userTable.get(id));
-        }
-        return list;
+    public List<TimeEntry> list() {
+        return new ArrayList<TimeEntry>(userTable.values());
     }
-
-
 }
