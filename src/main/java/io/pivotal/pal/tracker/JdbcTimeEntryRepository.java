@@ -58,19 +58,24 @@ public class JdbcTimeEntryRepository implements TimeEntryRepository{
 
     @Override
     public TimeEntry find(long id) {
-        return jdbcTemplate.queryForObject(
-                "select * from time_entries where id = ?",
-                new Object[]{id},
-                (rs, rowNum) -> {
-                    return new TimeEntry(
-                            rs.getLong("id"),
-                            rs.getLong("project_id"),
-                            rs.getLong("user_id"),
-                            rs.getDate("date").toLocalDate(),
-                            rs.getInt("hours")
-                    );
-                }
-        );
+
+        try {
+            return jdbcTemplate.queryForObject(
+                    "select * from time_entries where id = ?",
+                    new Object[]{id},
+                    (rs, rowNum) -> {
+                        return new TimeEntry(
+                                rs.getLong("id"),
+                                rs.getLong("project_id"),
+                                rs.getLong("user_id"),
+                                rs.getDate("date").toLocalDate(),
+                                rs.getInt("hours")
+                        );
+                    }
+            );
+        }catch(Exception ie){
+            return null;
+        }
     }
 
     @Override
@@ -82,7 +87,8 @@ public class JdbcTimeEntryRepository implements TimeEntryRepository{
                 timeEntry.getProjectId(),
                 timeEntry.getUserId(),
                 Date.valueOf(timeEntry.getDate()),
-                timeEntry.getHours()
+                timeEntry.getHours(),
+                id
                 );
 
         return find(id);
@@ -90,7 +96,8 @@ public class JdbcTimeEntryRepository implements TimeEntryRepository{
 
     @Override
     public void delete(long id) {
-    jdbcTemplate.update("delete from time_entries where id =? ",id);
+
+        jdbcTemplate.update("delete from time_entries where id =? ",id);
     }
 
     @Override
